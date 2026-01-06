@@ -15,7 +15,9 @@ const AiAssistant: React.FC = () => {
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -24,6 +26,20 @@ const AiAssistant: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+      const handleScroll = () => {
+          if (sectionRef.current) {
+              const rect = sectionRef.current.getBoundingClientRect();
+              // Only update if near viewport to save performance
+              if (rect.top < window.innerHeight && rect.bottom > 0) {
+                  setScrollY(window.scrollY);
+              }
+          }
+      };
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSend = async (e?: React.FormEvent, promptText?: string) => {
     if (e) e.preventDefault();
@@ -105,11 +121,21 @@ const AiAssistant: React.FC = () => {
   ];
 
   return (
-    <section id="gen-ai" className="py-24 bg-pebble-900 text-white overflow-hidden relative scroll-mt-16">
-       {/* Decorative BG */}
-       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-20">
-            <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-accent-600 rounded-full blur-[120px]"></div>
-            <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600 rounded-full blur-[100px]"></div>
+    <section 
+        id="gen-ai" 
+        ref={sectionRef}
+        className="py-24 bg-pebble-900 text-white overflow-hidden relative scroll-mt-16"
+    >
+       {/* Decorative BG with Parallax */}
+       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+            <div 
+                className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-accent-600 rounded-full blur-[120px] opacity-20 transition-transform duration-100 ease-out"
+                style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+            ></div>
+            <div 
+                className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600 rounded-full blur-[100px] opacity-20 transition-transform duration-100 ease-out"
+                style={{ transform: `translateY(-${scrollY * 0.08}px)` }}
+            ></div>
        </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -130,11 +156,11 @@ const AiAssistant: React.FC = () => {
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-pebble-800/50 p-4 rounded-xl border border-pebble-700 backdrop-blur-sm">
+                <div className="bg-pebble-800/50 p-4 rounded-xl border border-pebble-700 backdrop-blur-sm hover:bg-pebble-800 transition-colors">
                     <h4 className="font-bold text-white mb-2">LLM Integration</h4>
                     <p className="text-sm text-pebble-300">Seamlessly connect Gemini, GPT, or Claude into your existing workflow.</p>
                 </div>
-                <div className="bg-pebble-800/50 p-4 rounded-xl border border-pebble-700 backdrop-blur-sm">
+                <div className="bg-pebble-800/50 p-4 rounded-xl border border-pebble-700 backdrop-blur-sm hover:bg-pebble-800 transition-colors">
                     <h4 className="font-bold text-white mb-2">Smart Agents</h4>
                     <p className="text-sm text-pebble-300">Autonomous agents that perform tasks, schedule meetings, and more.</p>
                 </div>
@@ -142,7 +168,7 @@ const AiAssistant: React.FC = () => {
           </RevealOnScroll>
 
           {/* Chat Interface */}
-          <RevealOnScroll delay={200} className="bg-slate-900 rounded-2xl border border-pebble-700 shadow-2xl overflow-hidden flex flex-col h-[600px]">
+          <RevealOnScroll delay={200} className="bg-slate-900 rounded-2xl border border-pebble-700 shadow-2xl overflow-hidden flex flex-col h-[600px] transform hover:scale-[1.01] transition-transform duration-300">
             <div className="bg-slate-800 p-4 border-b border-slate-700 flex items-center gap-3">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>

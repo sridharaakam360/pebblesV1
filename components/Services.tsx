@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Globe, Smartphone, Cpu, Layers, BrainCircuit, Rocket, TrendingUp, Cloud, BarChart3, Shield, Blocks } from 'lucide-react';
 import { Service } from '../types';
 import RevealOnScroll from './RevealOnScroll';
@@ -84,9 +84,30 @@ const services: Service[] = [
 ];
 
 const Services: React.FC = () => {
+  const [scrollY, setScrollY] = useState(0);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      // Small optimization: only update if within a reasonable range or use requestAnimationFrame
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section id="services" className="py-24 bg-white relative scroll-mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="services" className="py-24 bg-white relative scroll-mt-16 overflow-hidden">
+      {/* Floating Parallax Shape */}
+      <div 
+        className="absolute top-20 left-0 w-64 h-64 bg-pebble-100 rounded-full blur-3xl opacity-40 transition-transform duration-75 ease-out -z-0"
+        style={{ transform: `translateY(${scrollY * 0.15}px)` }}
+      ></div>
+      
+      <div className="absolute right-0 bottom-40 w-96 h-96 border border-pebble-100 rounded-full opacity-30 -z-0"
+         style={{ transform: `translateY(-${scrollY * 0.05}px)` }}
+      ></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-accent-600 font-semibold tracking-wide uppercase text-sm mb-2">Our Expertise</h2>
           <h3 className="text-3xl md:text-4xl font-display font-bold text-slate-900 mb-4">
@@ -103,7 +124,7 @@ const Services: React.FC = () => {
                 <div 
                   className="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-pebble-100 h-full"
                 >
-                  <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center text-accent-600 mb-6 group-hover:bg-accent-600 group-hover:text-white transition-colors">
+                  <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center text-accent-600 mb-6 group-hover:bg-accent-600 group-hover:text-white transition-colors transform group-hover:scale-110 duration-300">
                     {service.icon}
                   </div>
                   <h4 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h4>
