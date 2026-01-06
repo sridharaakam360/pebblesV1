@@ -13,46 +13,75 @@ const navItems: NavItem[] = [
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+
+      // Active section detection
+      const sections = navItems.map(item => item.href.substring(1));
+      
+      // Calculate center of viewport to determine "active" area
+      const scrollPosition = window.scrollY + (window.innerHeight / 3);
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(sectionId);
+          }
+        }
+      }
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleNavClick = (href: string) => {
+    setIsOpen(false);
+    // Smooth scroll is handled by CSS, but we can help it or just let native behavior work
+  };
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass-nav shadow-sm py-2' : 'bg-transparent py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo(0,0)}>
+          <a href="#home" className="flex-shrink-0 flex items-center gap-2 cursor-pointer group" onClick={() => handleNavClick('#home')}>
             {/* Using an icon abstraction for the logo stones */}
-            <div className="relative w-10 h-10 flex items-center justify-center">
+            <div className="relative w-10 h-10 flex items-center justify-center transition-transform group-hover:scale-105">
                 <div className="absolute w-6 h-4 bg-pebble-600 rounded-full top-2 left-0 transform -rotate-12 opacity-90"></div>
                 <div className="absolute w-5 h-3 bg-accent-500 rounded-full bottom-2 right-0 transform rotate-6 opacity-90"></div>
             </div>
             <div className="flex flex-col">
-                <span className="font-display font-bold text-xl leading-none tracking-tight text-slate-900">Pebbles</span>
+                <span className="font-display font-bold text-xl leading-none tracking-tight text-slate-900 group-hover:text-pebble-800 transition-colors">Pebbles</span>
                 <span className="text-[0.65rem] font-semibold tracking-widest text-pebble-500 uppercase">Tech Studio</span>
             </div>
-          </div>
+          </a>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-slate-600 hover:text-accent-600 font-medium transition-colors text-sm uppercase tracking-wide"
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.substring(1);
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className={`text-sm uppercase tracking-wide font-medium transition-all duration-200 relative
+                    ${isActive ? 'text-accent-600' : 'text-slate-600 hover:text-accent-600'}
+                  `}
+                >
+                  {item.label}
+                  <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-accent-600 transform transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0'}`}></span>
+                </a>
+              );
+            })}
             <a
               href="#contact"
-              className="bg-pebble-900 text-white px-5 py-2 rounded-full font-medium hover:bg-accent-600 transition-colors shadow-lg shadow-pebble-900/20 text-sm"
+              className="bg-pebble-900 text-white px-5 py-2 rounded-full font-medium hover:bg-accent-600 transition-all hover:scale-105 shadow-lg shadow-pebble-900/20 text-sm"
             >
               Get Started
             </a>
@@ -62,7 +91,8 @@ const Navbar: React.FC = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-slate-600 hover:text-slate-900 focus:outline-none"
+              className="text-slate-600 hover:text-slate-900 focus:outline-none p-2"
+              aria-label="Toggle menu"
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -71,29 +101,34 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden glass-nav absolute w-full border-b border-slate-200">
-          <div className="px-4 pt-2 pb-6 space-y-2">
-            {navItems.map((item) => (
+      <div className={`md:hidden glass-nav absolute w-full border-b border-slate-200 transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className="px-4 pt-2 pb-6 space-y-2">
+          {navItems.map((item) => {
+             const isActive = activeSection === item.href.substring(1);
+             return (
               <a
                 key={item.label}
                 href={item.href}
-                className="block px-3 py-3 text-base font-medium text-slate-700 hover:text-accent-600 hover:bg-slate-50 rounded-md"
-                onClick={() => setIsOpen(false)}
+                className={`block px-3 py-3 text-base font-medium rounded-md transition-colors ${
+                    isActive 
+                    ? 'text-accent-600 bg-slate-50' 
+                    : 'text-slate-700 hover:text-accent-600 hover:bg-slate-50'
+                }`}
+                onClick={() => handleNavClick(item.href)}
               >
                 {item.label}
               </a>
-            ))}
-            <a
-                href="#contact"
-                className="block w-full text-center mt-4 bg-pebble-900 text-white px-5 py-3 rounded-lg font-medium hover:bg-accent-600 transition-colors"
-                onClick={() => setIsOpen(false)}
-            >
-              Get Started
-            </a>
-          </div>
+            );
+          })}
+          <a
+              href="#contact"
+              className="block w-full text-center mt-4 bg-pebble-900 text-white px-5 py-3 rounded-lg font-medium hover:bg-accent-600 transition-colors"
+              onClick={() => handleNavClick('#contact')}
+          >
+            Get Started
+          </a>
         </div>
-      )}
+      </div>
     </nav>
   );
 };

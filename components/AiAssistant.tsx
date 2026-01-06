@@ -105,7 +105,7 @@ const AiAssistant: React.FC = () => {
   ];
 
   return (
-    <section id="gen-ai" className="py-24 bg-pebble-900 text-white overflow-hidden relative">
+    <section id="gen-ai" className="py-24 bg-pebble-900 text-white overflow-hidden relative scroll-mt-16">
        {/* Decorative BG */}
        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-20">
             <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-accent-600 rounded-full blur-[120px]"></div>

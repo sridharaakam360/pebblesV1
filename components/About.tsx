@@ -3,7 +3,7 @@ import RevealOnScroll from './RevealOnScroll';
 
 const About: React.FC = () => {
   return (
-    <section id="about" className="py-24 bg-white">
+    <section id="about" className="py-24 bg-white scroll-mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
             <RevealOnScroll className="relative">
