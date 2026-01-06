@@ -36,104 +36,88 @@ const Hero: React.FC = () => {
       ref={containerRef}
     >
       <style>{`
-        /* --- Animation Keyframes (26s Loop) --- */
+        /* --- Animation Keyframes (20s Loop) --- */
 
-        /* 1. Client: Starts Left, Leaves Left, Returns Left */
-        @keyframes clientSequence {
-          0% { transform: translateX(5vw) scaleX(1); opacity: 1; }
-          10% { transform: translateX(5vw) scaleX(1); opacity: 1; } /* Talk */
-          15% { transform: translateX(5vw) scaleX(-1); opacity: 1; } /* Turn back */
-          20% { transform: translateX(-10vw) scaleX(-1); opacity: 0; } /* Walk off left */
-          80% { transform: translateX(-10vw) scaleX(1); opacity: 0; } /* Wait off screen */
-          85% { transform: translateX(5vw) scaleX(1); opacity: 1; } /* Re-enter for delivery */
-          100% { transform: translateX(5vw) scaleX(1); opacity: 1; }
+        /* 1. Coffee Sip Animation (Continuous) */
+        @keyframes sipCoffee {
+            0%, 80% { transform: rotate(0deg); }
+            85%, 95% { transform: rotate(-45deg) translateY(-5px); } /* Lift cup */
+            100% { transform: rotate(0deg); }
         }
 
-        /* 2. Pebbles Rep: Left -> Center (Plan) -> Right (Build) -> Fade */
-        @keyframes repSequence {
-          0% { transform: translateX(12vw) scaleX(-1); opacity: 1; } /* Facing client */
-          10% { transform: translateX(12vw) scaleX(1); opacity: 1; } /* Turn right */
-          20% { transform: translateX(35vw) scaleX(1); opacity: 1; } /* Walk to Planning */
-          40% { transform: translateX(35vw) scaleX(1); opacity: 1; } /* Planning done */
-          50% { transform: translateX(65vw) scaleX(1); opacity: 1; } /* Walk to Dev */
-          75% { transform: translateX(65vw) scaleX(1); opacity: 1; } /* Build done */
-          80% { transform: translateX(65vw) scaleX(1); opacity: 0; } /* Fade out (into van) */
-          100% { transform: translateX(65vw) scaleX(1); opacity: 0; }
+        /* 2. Message Fly (Rep -> Plan) */
+        @keyframes messageFly {
+            0%, 10% { opacity: 0; transform: scale(0); left: 18vw; top: 60%; }
+            12% { opacity: 1; transform: scale(1); left: 18vw; top: 40%; }
+            25% { opacity: 1; transform: scale(1); left: 38vw; top: 40%; } /* Arrive Plan */
+            28% { opacity: 0; transform: scale(0); left: 38vw; top: 60%; }
+            100% { opacity: 0; }
         }
 
-        /* 3. Planning Team: Appears in Center */
-        @keyframes planTeamSequence {
-          0%, 15% { opacity: 0; transform: translateX(40vw); }
-          20% { opacity: 1; transform: translateX(40vw); } /* Meet Rep */
-          40% { opacity: 1; transform: translateX(40vw); } /* Planning */
-          45% { opacity: 0; transform: translateX(40vw); } /* Disband */
-          100% { opacity: 0; }
+        /* 3. Planning Team Appear */
+        @keyframes planAppear {
+            0%, 25% { opacity: 0; transform: scale(0.8); }
+            28% { opacity: 1; transform: scale(1); }
+            40% { opacity: 1; transform: scale(1); }
+            45% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 0; }
         }
 
-        /* 4. Dev Team: Appears on Right */
-        @keyframes devTeamSequence {
-          0%, 45% { opacity: 0; transform: translateX(70vw); }
-          50% { opacity: 1; transform: translateX(70vw); } /* Meet Rep */
-          75% { opacity: 1; transform: translateX(70vw); } /* Finish Build */
-          80% { opacity: 0; transform: translateX(70vw); } /* Disband/Load */
-          100% { opacity: 0; }
+        /* 4. Runner (Plan -> Dev) */
+        @keyframes runnerRun {
+            0%, 40% { opacity: 0; transform: translateX(38vw) scaleX(1); }
+            42% { opacity: 1; transform: translateX(38vw) scaleX(1); }
+            58% { opacity: 1; transform: translateX(65vw) scaleX(1); } /* Arrive Dev */
+            60% { opacity: 0; transform: translateX(65vw) scaleX(1); }
+            100% { opacity: 0; }
         }
 
-        /* 5. Van: Enters Right -> Picks Up -> Exits Left */
-        @keyframes vanSequence {
-          /* scaleX(-1) flips the van to face LEFT */
-          0%, 70% { transform: translateX(120vw) scaleX(-1); } /* Wait off screen right */
-          75% { transform: translateX(60vw) scaleX(-1); } /* Arrive at Dev */
-          82% { transform: translateX(60vw) scaleX(-1); } /* Load */
-          92% { transform: translateX(12vw) scaleX(-1); } /* Deliver to Client */
-          95% { transform: translateX(12vw) scaleX(-1); } /* Pause */
-          100% { transform: translateX(-50vw) scaleX(-1); } /* Exit Left */
+        /* 5. Dev Team Appear */
+        @keyframes devAppear {
+            0%, 58% { opacity: 0; }
+            60% { opacity: 1; }
+            78% { opacity: 1; }
+            82% { opacity: 0; }
+            100% { opacity: 0; }
         }
 
-        /* 6. Product: Grows at Dev -> Moves to Van */
-        @keyframes productSequence {
-          0%, 55% { transform: scale(0); opacity: 0; }
-          60%, 75% { transform: scale(1); opacity: 1; } /* Built */
-          78% { transform: scale(0.5) translateX(-20px) translateY(10px); opacity: 0; } /* Into Van */
-          100% { transform: scale(0); opacity: 0; }
+        /* 6. Product Build */
+        @keyframes productBuild {
+            0%, 65% { transform: scale(0); opacity: 0; }
+            70%, 78% { transform: scale(1); opacity: 1; }
+            80% { transform: scale(0.5) translateX(-20px) translateY(10px); opacity: 0; } /* Into Van */
+            100% { transform: scale(0); opacity: 0; }
         }
 
-        /* --- Improved Leg Animations --- */
-        /* Rotate from the hip (top of the line) */
-        @keyframes legSwing1 {
-          0%, 100% { transform: rotate(-25deg); }
-          50% { transform: rotate(25deg); }
-        }
-        @keyframes legSwing2 {
-          0%, 100% { transform: rotate(25deg); }
-          50% { transform: rotate(-25deg); }
+        /* 7. Van Delivery */
+        @keyframes vanDrive {
+             0%, 75% { transform: translateX(110vw) scaleX(-1); } /* Waiting Right (scaleX(-1) faces Left) */
+             80% { transform: translateX(65vw) scaleX(-1); } /* Arrive Dev */
+             85% { transform: translateX(65vw) scaleX(-1); } /* Load */
+             95% { transform: translateX(12vw) scaleX(-1); } /* Arrive Client */
+             100% { transform: translateX(-20vw) scaleX(-1); } /* Exit Left */
         }
         
         @keyframes wheelSpin {
             0% { transform: rotate(0deg); }
-            100% { transform: rotate(-720deg); } /* Counter-clockwise for left movement */
+            100% { transform: rotate(-720deg); }
         }
         
-        @keyframes floatLabel {
-            0%, 10% { opacity: 0; transform: translateY(10px); }
-            20%, 80% { opacity: 1; transform: translateY(0); }
-            90%, 100% { opacity: 0; transform: translateY(-10px); }
+        @keyframes runLegs { 
+            0%, 100% { transform: rotate(-30deg); } 
+            50% { transform: rotate(30deg); } 
         }
 
-        .anim-client { animation: clientSequence 26s linear infinite; }
-        .anim-rep { animation: repSequence 26s linear infinite; }
-        .anim-plan { animation: planTeamSequence 26s linear infinite; }
-        .anim-dev { animation: devTeamSequence 26s linear infinite; }
-        .anim-van { animation: vanSequence 26s ease-in-out infinite; }
-        .anim-product { animation: productSequence 26s linear infinite; }
-        
-        /* Leg classes with transform origin at the hip (20, 40) */
-        .leg-left { transform-origin: 20px 40px; animation: legSwing1 0.6s ease-in-out infinite; }
-        .leg-right { transform-origin: 20px 40px; animation: legSwing2 0.6s ease-in-out infinite; }
-        
+        /* Classes */
+        .anim-arm-sip { transform-origin: 20px 20px; animation: sipCoffee 8s ease-in-out infinite; }
+        .anim-message { animation: messageFly 20s linear infinite; }
+        .anim-plan { animation: planAppear 20s ease-in-out infinite; }
+        .anim-runner { animation: runnerRun 20s linear infinite; }
+        .anim-dev { animation: devAppear 20s ease-in-out infinite; }
+        .anim-product { animation: productBuild 20s ease-in-out infinite; }
+        .anim-van { animation: vanDrive 20s ease-in-out infinite; }
         .anim-wheels { animation: wheelSpin 2s linear infinite; }
-        
-        .label-stage { animation: floatLabel 3s ease-in-out infinite; }
+        .anim-legs-run { transform-origin: 25px 35px; animation: runLegs 0.2s linear infinite; }
 
       `}</style>
 
@@ -240,96 +224,106 @@ const Hero: React.FC = () => {
       </div>
 
       {/* --- Narrative Stickman Animation (Bottom) --- */}
-      <div className="absolute bottom-0 left-0 w-full h-28 pointer-events-none overflow-hidden z-20 border-b-4 border-slate-200 bg-gradient-to-t from-white/80 to-transparent">
+      <div className="absolute bottom-0 left-0 w-full h-32 pointer-events-none overflow-hidden z-20 border-b-4 border-slate-200 bg-gradient-to-t from-white/90 to-transparent">
         
-        {/* Phase Labels */}
-        <div className="absolute top-4 w-full h-full text-xs font-bold uppercase tracking-wider text-slate-400 z-10">
-            <div className="absolute left-[5vw] top-0 animate-[floatLabel_26s_ease-in-out_infinite] opacity-0" style={{animationDelay: '0s'}}>Consultation</div>
-            <div className="absolute left-[35vw] top-0 animate-[floatLabel_26s_ease-in-out_infinite] opacity-0" style={{animationDelay: '5s'}}>Planning</div>
-            <div className="absolute left-[65vw] top-0 animate-[floatLabel_26s_ease-in-out_infinite] opacity-0" style={{animationDelay: '13s'}}>Development</div>
-            <div className="absolute left-[30vw] top-0 animate-[floatLabel_26s_ease-in-out_infinite] opacity-0" style={{animationDelay: '20s'}}>Delivery</div>
-        </div>
+        {/* Scene 1: Coffee Meeting (Always Visible on Left) */}
+        <div className="absolute bottom-0 left-[5vw] z-30">
+            {/* Table */}
+            <div className="absolute bottom-0 left-4 w-28 h-12 border-t-4 border-slate-300 bg-white/50 skew-x-12"></div>
+            
+            <div className="flex gap-10 relative">
+                {/* Client */}
+                <div className="relative">
+                     <svg width="40" height="70" viewBox="0 0 40 70">
+                        <circle cx="20" cy="10" r="6" stroke="#64748b" fill="#f1f5f9" strokeWidth="2" />
+                        <line x1="20" y1="16" x2="20" y2="45" stroke="#64748b" strokeWidth="2" />
+                        {/* Sitting Legs */}
+                        <path d="M20 45 L35 45 L35 65" stroke="#64748b" strokeWidth="2" fill="none" />
+                        {/* Arm holding Cup */}
+                        <g className="anim-arm-sip">
+                            <line x1="20" y1="20" x2="35" y2="25" stroke="#64748b" strokeWidth="2" />
+                            <rect x="32" y="20" width="6" height="8" fill="#cbd5e1" rx="1" /> {/* Cup */}
+                        </g>
+                    </svg>
+                    <div className="absolute -top-4 -left-2 bg-white px-1 rounded shadow text-[9px] text-slate-500">Client</div>
+                </div>
 
-        {/* 1. Client */}
-        <div className="anim-client absolute bottom-0 left-0 z-10">
-            <svg width="40" height="60" viewBox="0 0 40 60" className="opacity-80">
-                <circle cx="20" cy="10" r="6" stroke="#64748b" fill="#f1f5f9" strokeWidth="2" />
-                <line x1="20" y1="16" x2="20" y2="40" stroke="#64748b" strokeWidth="2" />
-                <line x1="20" y1="25" x2="25" y2="30" stroke="#64748b" strokeWidth="2" strokeLinecap="round" /> 
-                <line x1="20" y1="25" x2="15" y2="35" stroke="#64748b" strokeWidth="2" strokeLinecap="round" />
-                {/* Legs with specific classes for swing */}
-                <line x1="20" y1="40" x2="20" y2="60" stroke="#64748b" strokeWidth="2" strokeLinecap="round" className="leg-left" />
-                <line x1="20" y1="40" x2="20" y2="60" stroke="#64748b" strokeWidth="2" strokeLinecap="round" className="leg-right" />
-            </svg>
-        </div>
-
-        {/* 2. Pebbles Rep (The Walker) */}
-        <div className="anim-rep absolute bottom-0 left-0 z-20">
-           <svg width="40" height="60" viewBox="0 0 40 60" className="opacity-100 drop-shadow-sm">
-                <circle cx="20" cy="10" r="6" stroke="#0891b2" fill="#e0f2fe" strokeWidth="2" />
-                <line x1="20" y1="16" x2="20" y2="40" stroke="#0891b2" strokeWidth="2" />
-                <rect x="22" y="30" width="10" height="8" fill="#334155" rx="1" />
-                <line x1="20" y1="25" x2="22" y2="30" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" /> 
-                {/* Walking legs */}
-                <line x1="20" y1="40" x2="20" y2="60" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" className="leg-left" />
-                <line x1="20" y1="40" x2="20" y2="60" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" className="leg-right" />
-            </svg>
-        </div>
-
-        {/* 3. Planning Team (Center) */}
-        <div className="anim-plan absolute bottom-0 left-0 z-10">
-            <div className="flex gap-4">
-                {/* Planner 1 */}
-                <svg width="35" height="55" viewBox="0 0 40 60" className="opacity-70">
-                    <circle cx="20" cy="10" r="5" stroke="#475569" fill="none" strokeWidth="2" />
-                    <line x1="20" y1="16" x2="20" y2="40" stroke="#475569" strokeWidth="2" />
-                    <line x1="20" y1="25" x2="10" y2="15" stroke="#475569" strokeWidth="2" /> {/* Hand up */}
-                    <line x1="20" y1="40" x2="15" y2="60" stroke="#475569" strokeWidth="2" />
-                    <line x1="20" y1="40" x2="25" y2="60" stroke="#475569" strokeWidth="2" />
-                </svg>
-                {/* Planner 2 */}
-                <svg width="35" height="55" viewBox="0 0 40 60" className="opacity-70">
-                    <circle cx="20" cy="10" r="5" stroke="#475569" fill="none" strokeWidth="2" />
-                    <line x1="20" y1="16" x2="20" y2="40" stroke="#475569" strokeWidth="2" />
-                    <line x1="20" y1="25" x2="30" y2="35" stroke="#475569" strokeWidth="2" />
-                    <line x1="20" y1="40" x2="15" y2="60" stroke="#475569" strokeWidth="2" />
-                    <line x1="20" y1="40" x2="25" y2="60" stroke="#475569" strokeWidth="2" />
-                </svg>
-            </div>
-            {/* Gear Icon above them */}
-            <div className="absolute -top-10 left-8 text-pebble-500 animate-spin-slow">
-                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+                {/* Rep */}
+                <div className="relative">
+                    <svg width="40" height="70" viewBox="0 0 40 70">
+                        <circle cx="20" cy="10" r="6" stroke="#0891b2" fill="#e0f2fe" strokeWidth="2" />
+                        <line x1="20" y1="16" x2="20" y2="45" stroke="#0891b2" strokeWidth="2" />
+                        {/* Sitting Legs */}
+                        <path d="M20 45 L5 45 L5 65" stroke="#0891b2" strokeWidth="2" fill="none" />
+                        {/* Arm holding Cup */}
+                        <g className="anim-arm-sip" style={{animationDelay: '1s'}}>
+                            <line x1="20" y1="20" x2="5" y2="25" stroke="#0891b2" strokeWidth="2" />
+                            <rect x="2" y="20" width="6" height="8" fill="#0891b2" rx="1" /> {/* Cup */}
+                        </g>
+                    </svg>
+                    <div className="absolute -top-4 -right-2 bg-white px-1 rounded shadow text-[9px] text-accent-600">Rep</div>
+                </div>
             </div>
         </div>
 
-        {/* 4. Dev Team (Right) */}
-        <div className="anim-dev absolute bottom-0 left-0 z-10">
-             <div className="flex gap-4">
-                {/* Dev 1 */}
-                <svg width="35" height="55" viewBox="0 0 40 60" className="opacity-70">
-                    <circle cx="20" cy="10" r="5" stroke="#475569" fill="none" strokeWidth="2" />
-                    <line x1="20" y1="16" x2="20" y2="40" stroke="#475569" strokeWidth="2" />
-                    <line x1="20" y1="25" x2="30" y2="25" stroke="#475569" strokeWidth="2" /> {/* Typing */}
-                    <line x1="20" y1="40" x2="15" y2="60" stroke="#475569" strokeWidth="2" />
-                    <line x1="20" y1="40" x2="25" y2="60" stroke="#475569" strokeWidth="2" />
+        {/* Scene 2: Flying Message */}
+        <div className="anim-message absolute w-8 h-6 bg-accent-500 rounded text-white flex items-center justify-center z-40 shadow-md">
+            <div className="w-0 h-0 border-l-[4px] border-l-transparent border-t-[6px] border-t-white border-r-[4px] border-r-transparent absolute top-0"></div>
+            <div className="w-full h-full border border-white/30 rounded"></div>
+        </div>
+
+        {/* Scene 3: Planning Team (Center) */}
+        <div className="anim-plan absolute bottom-0 left-[38vw] z-20">
+            <div className="flex gap-4 items-end">
+                {/* Planner */}
+                <svg width="30" height="60" viewBox="0 0 40 60">
+                     <circle cx="20" cy="10" r="5" stroke="#475569" strokeWidth="2" fill="none"/>
+                     <line x1="20" y1="15" x2="20" y2="40" stroke="#475569" strokeWidth="2"/>
+                     <line x1="20" y1="40" x2="15" y2="60" stroke="#475569" strokeWidth="2"/>
+                     <line x1="20" y1="40" x2="25" y2="60" stroke="#475569" strokeWidth="2"/>
+                     <line x1="20" y1="25" x2="10" y2="15" stroke="#475569" strokeWidth="2"/> {/* Hand up */}
                 </svg>
-                 {/* The Product (Box) */}
-                <div className="anim-product w-12 h-12 bg-accent-500 rounded-lg shadow-lg border-2 border-white z-10 flex items-center justify-center text-white font-bold text-xs flex-col">
-                    <div className="w-full h-1 bg-white/30 absolute top-3"></div>
+                {/* Board */}
+                <div className="mb-10 bg-white border border-slate-300 p-1 rounded shadow-sm w-12 h-8 flex flex-wrap gap-0.5">
+                    <div className="w-2 h-2 bg-blue-200 rounded-[1px]"></div>
+                    <div className="w-2 h-2 bg-green-200 rounded-[1px]"></div>
+                    <div className="w-2 h-2 bg-red-200 rounded-[1px]"></div>
+                </div>
+            </div>
+        </div>
+
+        {/* Scene 4: Runner (Moves Plan -> Dev) */}
+        <div className="anim-runner absolute bottom-0 left-0 z-20">
+             <svg width="40" height="60" viewBox="0 0 40 60">
+                 <circle cx="20" cy="10" r="5" stroke="#0891b2" strokeWidth="2" fill="#e0f2fe"/>
+                 <line x1="20" y1="15" x2="28" y2="35" stroke="#0891b2" strokeWidth="2" transform="rotate(25 20 15)"/> {/* Lean forward */}
+                 <line x1="20" y1="20" x2="30" y2="30" stroke="#0891b2" strokeWidth="2"/> {/* Arms */}
+                 <line x1="20" y1="20" x2="10" y2="30" stroke="#0891b2" strokeWidth="2"/>
+                 <line x1="28" y1="35" x2="18" y2="55" stroke="#0891b2" strokeWidth="2" className="anim-legs-run" />
+                 <line x1="28" y1="35" x2="38" y2="55" stroke="#0891b2" strokeWidth="2" className="anim-legs-run" style={{animationDelay: '0.1s'}}/>
+             </svg>
+        </div>
+
+        {/* Scene 5: Dev Team (Right) */}
+        <div className="anim-dev absolute bottom-0 left-[65vw] z-20">
+             <div className="flex gap-4 items-end">
+                {/* Developer */}
+                <svg width="35" height="60" viewBox="0 0 40 60">
+                     <circle cx="20" cy="10" r="5" stroke="#475569" strokeWidth="2" fill="none"/>
+                     <line x1="20" y1="15" x2="20" y2="40" stroke="#475569" strokeWidth="2"/>
+                     <line x1="20" y1="25" x2="32" y2="30" stroke="#475569" strokeWidth="2"/> {/* Typing */}
+                     <line x1="20" y1="40" x2="15" y2="60" stroke="#475569" strokeWidth="2"/>
+                     <line x1="20" y1="40" x2="25" y2="60" stroke="#475569" strokeWidth="2"/>
+                </svg>
+                {/* Product appearing */}
+                <div className="anim-product mb-10 w-12 h-10 bg-accent-500 rounded border-2 border-white shadow-lg flex items-center justify-center text-white text-[9px] font-bold flex-col z-10">
+                    <div className="w-8 h-1 bg-white/30 mb-1 rounded"></div>
                     APP
                 </div>
-                 {/* Dev 2 */}
-                <svg width="35" height="55" viewBox="0 0 40 60" className="opacity-70">
-                    <circle cx="20" cy="10" r="5" stroke="#475569" fill="none" strokeWidth="2" />
-                    <line x1="20" y1="16" x2="20" y2="40" stroke="#475569" strokeWidth="2" />
-                    <line x1="20" y1="25" x2="10" y2="25" stroke="#475569" strokeWidth="2" /> {/* Typing */}
-                    <line x1="20" y1="40" x2="15" y2="60" stroke="#475569" strokeWidth="2" />
-                    <line x1="20" y1="40" x2="25" y2="60" stroke="#475569" strokeWidth="2" />
-                </svg>
-             </div>
+            </div>
         </div>
 
-        {/* 5. Delivery Van (Right to Left) */}
+        {/* Scene 6: Van Delivery (Right -> Left) */}
         <div className="anim-van absolute bottom-0 left-0 z-30 drop-shadow-md">
             {/* transform scaleX(-1) is applied in animation to make it face Left */}
             <svg width="100" height="60" viewBox="0 0 100 60">
