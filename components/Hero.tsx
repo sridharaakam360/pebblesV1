@@ -3,15 +3,6 @@ import { ArrowRight, Code2, Zap } from 'lucide-react';
 import RevealOnScroll from './RevealOnScroll';
 
 const Hero: React.FC = () => {
-  
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <section id="home" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden scroll-mt-24">
       {/* Background Elements */}
@@ -39,7 +30,6 @@ const Hero: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a 
                 href="#contact"
-                onClick={(e) => scrollToSection(e, 'contact')}
                 className="inline-flex items-center justify-center gap-2 bg-pebble-900 text-white px-8 py-4 rounded-full font-semibold hover:bg-pebble-800 transition-all hover:scale-105 shadow-lg shadow-pebble-900/20 cursor-pointer"
               >
                 Start Your Project
@@ -47,7 +37,6 @@ const Hero: React.FC = () => {
               </a>
               <a 
                 href="#services"
-                onClick={(e) => scrollToSection(e, 'services')} 
                 className="inline-flex items-center justify-center gap-2 bg-white text-pebble-900 border border-slate-200 px-8 py-4 rounded-full font-semibold hover:bg-slate-50 transition-all hover:border-pebble-300 cursor-pointer"
               >
                 Explore Services

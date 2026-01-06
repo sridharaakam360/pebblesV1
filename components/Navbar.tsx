@@ -40,14 +40,10 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
+  const handleNavClick = () => {
     setIsOpen(false);
-    const targetId = href.substring(1);
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    // We let the native anchor tag handle the scrolling, 
+    // supported by 'scroll-smooth' class in index.html
   };
 
   return (
@@ -58,7 +54,7 @@ const Navbar: React.FC = () => {
           <a 
             href="#home" 
             className="flex-shrink-0 flex items-center gap-2 cursor-pointer group" 
-            onClick={(e) => handleNavClick(e, '#home')}
+            onClick={handleNavClick}
           >
             {/* Using an icon abstraction for the logo stones */}
             <div className="relative w-10 h-10 flex items-center justify-center transition-transform group-hover:scale-105">
@@ -79,7 +75,7 @@ const Navbar: React.FC = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
+                  onClick={handleNavClick}
                   className={`text-sm uppercase tracking-wide font-medium transition-all duration-200 relative
                     ${isActive ? 'text-accent-600' : 'text-slate-600 hover:text-accent-600'}
                   `}
@@ -91,7 +87,7 @@ const Navbar: React.FC = () => {
             })}
             <a
               href="#contact"
-              onClick={(e) => handleNavClick(e, '#contact')}
+              onClick={handleNavClick}
               className="bg-pebble-900 text-white px-5 py-2 rounded-full font-medium hover:bg-accent-600 transition-all hover:scale-105 shadow-lg shadow-pebble-900/20 text-sm cursor-pointer"
             >
               Get Started
@@ -125,7 +121,7 @@ const Navbar: React.FC = () => {
                     ? 'text-accent-600 bg-slate-50' 
                     : 'text-slate-700 hover:text-accent-600 hover:bg-slate-50'
                 }`}
-                onClick={(e) => handleNavClick(e, item.href)}
+                onClick={handleNavClick}
               >
                 {item.label}
               </a>
@@ -134,7 +130,7 @@ const Navbar: React.FC = () => {
           <a
               href="#contact"
               className="block w-full text-center mt-4 bg-pebble-900 text-white px-5 py-3 rounded-lg font-medium hover:bg-accent-600 transition-colors cursor-pointer"
-              onClick={(e) => handleNavClick(e, '#contact')}
+              onClick={handleNavClick}
           >
             Get Started
           </a>

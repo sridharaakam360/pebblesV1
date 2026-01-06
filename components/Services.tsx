@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Smartphone, Cpu, Layers, BrainCircuit, Rocket, TrendingUp, Cloud, BarChart3 } from 'lucide-react';
+import { Globe, Smartphone, Cpu, Layers, BrainCircuit, Rocket, TrendingUp, Cloud, BarChart3, Shield, Blocks } from 'lucide-react';
 import { Service } from '../types';
 import RevealOnScroll from './RevealOnScroll';
 
@@ -52,6 +52,20 @@ const services: Service[] = [
     description: 'Turn your raw data into actionable insights with powerful visualization and business intelligence tools.',
     icon: <BarChart3 size={32} />,
     features: ['BI Dashboards', 'Data Warehousing', 'Predictive Analytics']
+  },
+  {
+    id: 'security',
+    title: 'Cybersecurity',
+    description: 'Comprehensive security assessments and robust protection strategies to safeguard your digital assets.',
+    icon: <Shield size={32} />,
+    features: ['Penetration Testing', 'Security Audits', 'Compliance (GDPR/HIPAA)']
+  },
+  {
+    id: 'blockchain',
+    title: 'Blockchain Solutions',
+    description: 'Secure, decentralized applications and smart contracts building trust and transparency into your transactions.',
+    icon: <Blocks size={32} />,
+    features: ['Smart Contracts', 'DeFi DApps', 'Private Blockchains']
   },
   {
     id: 'product',
