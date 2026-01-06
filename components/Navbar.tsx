@@ -40,9 +40,14 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
     setIsOpen(false);
-    // Smooth scroll is handled by CSS, but we can help it or just let native behavior work
+    const targetId = href.substring(1);
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -50,7 +55,11 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <a href="#home" className="flex-shrink-0 flex items-center gap-2 cursor-pointer group" onClick={() => handleNavClick('#home')}>
+          <a 
+            href="#home" 
+            className="flex-shrink-0 flex items-center gap-2 cursor-pointer group" 
+            onClick={(e) => handleNavClick(e, '#home')}
+          >
             {/* Using an icon abstraction for the logo stones */}
             <div className="relative w-10 h-10 flex items-center justify-center transition-transform group-hover:scale-105">
                 <div className="absolute w-6 h-4 bg-pebble-600 rounded-full top-2 left-0 transform -rotate-12 opacity-90"></div>
@@ -70,6 +79,7 @@ const Navbar: React.FC = () => {
                 <a
                   key={item.label}
                   href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   className={`text-sm uppercase tracking-wide font-medium transition-all duration-200 relative
                     ${isActive ? 'text-accent-600' : 'text-slate-600 hover:text-accent-600'}
                   `}
@@ -81,7 +91,8 @@ const Navbar: React.FC = () => {
             })}
             <a
               href="#contact"
-              className="bg-pebble-900 text-white px-5 py-2 rounded-full font-medium hover:bg-accent-600 transition-all hover:scale-105 shadow-lg shadow-pebble-900/20 text-sm"
+              onClick={(e) => handleNavClick(e, '#contact')}
+              className="bg-pebble-900 text-white px-5 py-2 rounded-full font-medium hover:bg-accent-600 transition-all hover:scale-105 shadow-lg shadow-pebble-900/20 text-sm cursor-pointer"
             >
               Get Started
             </a>
@@ -114,7 +125,7 @@ const Navbar: React.FC = () => {
                     ? 'text-accent-600 bg-slate-50' 
                     : 'text-slate-700 hover:text-accent-600 hover:bg-slate-50'
                 }`}
-                onClick={() => handleNavClick(item.href)}
+                onClick={(e) => handleNavClick(e, item.href)}
               >
                 {item.label}
               </a>
@@ -122,8 +133,8 @@ const Navbar: React.FC = () => {
           })}
           <a
               href="#contact"
-              className="block w-full text-center mt-4 bg-pebble-900 text-white px-5 py-3 rounded-lg font-medium hover:bg-accent-600 transition-colors"
-              onClick={() => handleNavClick('#contact')}
+              className="block w-full text-center mt-4 bg-pebble-900 text-white px-5 py-3 rounded-lg font-medium hover:bg-accent-600 transition-colors cursor-pointer"
+              onClick={(e) => handleNavClick(e, '#contact')}
           >
             Get Started
           </a>

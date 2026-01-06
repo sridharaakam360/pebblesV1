@@ -149,6 +149,7 @@ const Contact: React.FC = () => {
                         <option>Mobile App</option>
                         <option>Generative AI</option>
                         <option>Custom Software</option>
+                        <option>Digital Marketing</option>
                         <option>Product Design</option>
                         <option>Other</option>
                     </select>

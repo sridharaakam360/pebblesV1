@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Smartphone, Cpu, Layers, BrainCircuit, Rocket } from 'lucide-react';
+import { Globe, Smartphone, Cpu, Layers, BrainCircuit, Rocket, TrendingUp, Cloud, BarChart3 } from 'lucide-react';
 import { Service } from '../types';
 import RevealOnScroll from './RevealOnScroll';
 
@@ -33,6 +33,27 @@ const services: Service[] = [
     features: ['Custom Chatbots', 'Workflow Automation', 'Prompt Engineering']
   },
   {
+    id: 'marketing',
+    title: 'Digital Marketing',
+    description: 'Data-driven strategies to amplify your brand presence, optimize conversion rates, and dominate search rankings.',
+    icon: <TrendingUp size={32} />,
+    features: ['SEO & SEM', 'Social Media Growth', 'Performance Analytics']
+  },
+  {
+    id: 'cloud',
+    title: 'Cloud & DevOps',
+    description: 'Scalable cloud infrastructure and automated pipelines to accelerate deployment and ensure reliability.',
+    icon: <Cloud size={32} />,
+    features: ['AWS / Azure / GCP', 'CI/CD Pipelines', 'Kubernetes']
+  },
+  {
+    id: 'analytics',
+    title: 'Data Analytics',
+    description: 'Turn your raw data into actionable insights with powerful visualization and business intelligence tools.',
+    icon: <BarChart3 size={32} />,
+    features: ['BI Dashboards', 'Data Warehousing', 'Predictive Analytics']
+  },
+  {
     id: 'product',
     title: 'Product Design',
     description: 'User-centric design thinking that turns complex functionality into intuitive and beautiful interfaces.',
@@ -64,7 +85,7 @@ const Services: React.FC = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, idx) => (
-            <RevealOnScroll key={service.id} delay={idx * 100}>
+            <RevealOnScroll key={service.id} delay={idx * 50}>
                 <div 
                   className="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-pebble-100 h-full"
                 >
