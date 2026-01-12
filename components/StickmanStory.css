@@ -11,23 +11,36 @@
 24s: LOOP RESTART
 */
 
-/* Rocket flying animation - FORWARD DIRECTION */
+/* Rocket flying animation - FORWARD DIRECTION (loops within 24s cycle) */
 @keyframes rocket-fly {
-  0% {
+
+  /* Hidden at start */
+  0%,
+  8.33% {
     left: 15vw;
-    bottom: 8px;
+    bottom: 10px;
     opacity: 0;
     transform: rotate(0deg);
   }
 
-  5% {
+  /* Appear and fly (2s-4s = 8.33%-16.67%) */
+  8.75% {
     opacity: 1;
   }
 
-  95% {
+  16.25% {
     opacity: 1;
   }
 
+  /* End position and fade */
+  16.67% {
+    left: 38vw;
+    bottom: 18px;
+    opacity: 0;
+    transform: rotate(5deg);
+  }
+
+  /* Stay hidden for rest of cycle */
   100% {
     left: 38vw;
     bottom: 18px;
@@ -37,70 +50,99 @@
 }
 
 .anim-rocket {
-  animation: rocket-fly 2s ease-in-out forwards;
-  animation-delay: 2s;
+  animation: rocket-fly 24s ease-in-out infinite;
 }
 
-/* Planning scene appears and STAYS FOR 2 SECONDS */
+/* Planning scene appears and STAYS (4s-6s = 16.67%-25%) */
 @keyframes plan-appear {
-  0% {
+
+  /* Hidden at start */
+  0%,
+  16.67% {
     opacity: 0;
     transform: translateY(10px);
   }
 
-  5% {
+  /* Appear */
+  17.5% {
     opacity: 1;
     transform: translateY(0);
   }
 
-  95% {
+  /* Stay visible */
+  24.5% {
     opacity: 1;
     transform: translateY(0);
   }
 
+  /* Fade out */
+  25% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  /* Stay hidden */
   100% {
-    opacity: 1;
+    opacity: 0;
     transform: translateY(0);
   }
 }
 
 .anim-plan {
-  animation: plan-appear 2s ease-out forwards;
-  animation-delay: 4s;
+  animation: plan-appear 24s ease-out infinite;
 }
 
-/* Receiving arm wave */
+/* Receiving arm wave (happens at 4.2s = 17.5% of 24s) */
 @keyframes receiving-arm {
 
   0%,
-  100% {
+  17.5% {
     transform: rotate(0deg);
   }
 
-  50% {
+  17.75% {
     transform: rotate(-20deg);
+  }
+
+  18% {
+    transform: rotate(0deg);
+  }
+
+  18.25% {
+    transform: rotate(-20deg);
+  }
+
+  18.5%,
+  100% {
+    transform: rotate(0deg);
   }
 }
 
 .anim-receiving-arm {
   transform-origin: 20px 25px;
-  animation: receiving-arm 0.5s ease-in-out 2;
-  animation-delay: 4.2s;
+  animation: receiving-arm 24s ease-in-out infinite;
 }
 
-/* Runner animation */
+/* Runner animation (6s-9s = 25%-37.5%) */
 @keyframes runner-move {
-  0% {
+
+  0%,
+  25% {
     left: 38vw;
     opacity: 0;
   }
 
-  5% {
+  26% {
     opacity: 1;
   }
 
-  95% {
+  36.5% {
     opacity: 1;
+  }
+
+  37.5% {
+    left: 65vw;
+    opacity: 0;
   }
 
   100% {
@@ -110,34 +152,116 @@
 }
 
 .anim-runner {
-  animation: runner-move 3s ease-in-out forwards;
-  animation-delay: 6s;
+  animation: runner-move 24s ease-in-out infinite;
 }
 
-/* Running legs */
+/* Running legs - continuous during runner movement */
 @keyframes legs-run {
 
   0%,
-  100% {
+  25% {
     transform: rotate(0deg);
   }
 
-  50% {
+  25.625% {
     transform: rotate(-25deg);
+  }
+
+  26.25% {
+    transform: rotate(0deg);
+  }
+
+  26.875% {
+    transform: rotate(-25deg);
+  }
+
+  27.5% {
+    transform: rotate(0deg);
+  }
+
+  28.125% {
+    transform: rotate(-25deg);
+  }
+
+  28.75% {
+    transform: rotate(0deg);
+  }
+
+  29.375% {
+    transform: rotate(-25deg);
+  }
+
+  30% {
+    transform: rotate(0deg);
+  }
+
+  30.625% {
+    transform: rotate(-25deg);
+  }
+
+  31.25% {
+    transform: rotate(0deg);
+  }
+
+  31.875% {
+    transform: rotate(-25deg);
+  }
+
+  32.5% {
+    transform: rotate(0deg);
+  }
+
+  33.125% {
+    transform: rotate(-25deg);
+  }
+
+  33.75% {
+    transform: rotate(0deg);
+  }
+
+  34.375% {
+    transform: rotate(-25deg);
+  }
+
+  35% {
+    transform: rotate(0deg);
+  }
+
+  35.625% {
+    transform: rotate(-25deg);
+  }
+
+  36.25% {
+    transform: rotate(0deg);
+  }
+
+  36.875% {
+    transform: rotate(-25deg);
+  }
+
+  37.5%,
+  100% {
+    transform: rotate(0deg);
   }
 }
 
 .anim-legs-run {
   transform-origin: 26px 35px;
-  animation: legs-run 0.3s ease-in-out infinite;
-  animation-delay: 6s;
+  animation: legs-run 24s ease-in-out infinite;
 }
 
-/* Dev team appears */
+/* Dev team appears (9s = 37.5%) */
 @keyframes dev-appear {
-  0% {
+
+  0%,
+  37.5% {
     opacity: 0;
     transform: translateX(20px);
+  }
+
+  39.5% {
+    opacity: 1;
+    transform: translateX(0);
   }
 
   100% {
@@ -147,8 +271,7 @@
 }
 
 .anim-dev {
-  animation: dev-appear 0.5s ease-out forwards;
-  animation-delay: 9s;
+  animation: dev-appear 24s ease-out infinite;
 }
 
 /* Typing animation */
@@ -186,31 +309,33 @@
   animation-delay: 9s;
 }
 
-/* Product appears and DISAPPEARS when van loads */
+/* Product appears and DISAPPEARS when van loads (12s-14.6s = 50%-60.8%) */
 @keyframes product-lifecycle {
-  0% {
+
+  0%,
+  50% {
     opacity: 0;
     transform: scale(0.5) translateY(-20px);
   }
 
-  5% {
+  51% {
     opacity: 1;
     transform: scale(1.1) translateY(-5px);
   }
 
-  10% {
+  52% {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
 
-  /* Stay visible until van arrives at dev team (13s + 20% of 8s = ~14.6s) */
-  12.5% {
+  /* Stay visible until van arrives at dev team */
+  60% {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
 
-  /* Disappear when van loads - van arrives at 20% (13s + 1.6s = 14.6s) */
-  20% {
+  /* Disappear when van loads */
+  60.8% {
     opacity: 0;
     transform: scale(0.5) translateY(-10px);
   }
@@ -222,19 +347,14 @@
 }
 
 .anim-product {
-  animation: product-lifecycle 8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  animation-delay: 12s;
+  animation: product-lifecycle 24s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
 }
 
-/* App appears on coffee shop table when van arrives */
+/* App appears on coffee shop table when van arrives (19s = 79.2%) */
 @keyframes app-on-table {
-  0% {
-    opacity: 0;
-    transform: scale(0.5) translateY(-10px);
-  }
 
-  /* Van reaches coffee shop at 75% of 8s = 6s, total time = 13s + 6s = 19s */
-  74% {
+  0%,
+  78% {
     opacity: 0;
     transform: scale(0.5) translateY(-10px);
   }
@@ -244,59 +364,71 @@
     transform: scale(1.2) translateY(-3px);
   }
 
-  85% {
+  82% {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
 
-  /* Stay visible */
-  100% {
+  /* Stay visible until end of cycle */
+  99% {
     opacity: 1;
     transform: scale(1) translateY(0);
+  }
+
+  /* Fade out before loop restart */
+  100% {
+    opacity: 0;
+    transform: scale(0.5) translateY(-10px);
   }
 }
 
 .anim-app-table {
-  animation: app-on-table 8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  animation-delay: 13s;
+  animation: app-on-table 24s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
 }
 
-/* Van delivery animation with opacity control */
+/* Van delivery animation (13s-21s = 54.17%-87.5%) */
 @keyframes van-delivery {
-  0% {
+
+  0%,
+  54.17% {
     left: 100vw;
     opacity: 0;
   }
 
-  2% {
+  55% {
     opacity: 1;
   }
 
-  /* Drive to dev team */
-  20% {
+  /* Drive to dev team (20% of journey) */
+  60.8% {
     left: 63vw;
     opacity: 1;
   }
 
   /* Wait and load product */
-  35% {
+  65.8% {
     left: 63vw;
     opacity: 1;
   }
 
   /* Drive to coffee shop */
-  75% {
+  79.2% {
     left: 5vw;
     opacity: 1;
   }
 
   /* Stay at coffee shop */
-  95% {
+  86.5% {
     left: 5vw;
     opacity: 1;
   }
 
   /* Fade out before loop */
+  87.5% {
+    left: 5vw;
+    opacity: 0;
+  }
+
   100% {
     left: 5vw;
     opacity: 0;
@@ -304,24 +436,41 @@
 }
 
 .anim-van {
-  animation: van-delivery 8s ease-in-out forwards;
-  animation-delay: 13s;
+  animation: van-delivery 24s ease-in-out infinite;
 }
 
-/* Wheel rotation - only when van is visible */
+/* Wheel rotation - only when van is visible (54.17%-87.5%) */
 @keyframes wheels-rotate {
-  0% {
+
+  0%,
+  54.17% {
     transform: rotate(0deg);
   }
 
-  100% {
+  55% {
     transform: rotate(360deg);
+  }
+
+  60.8% {
+    transform: rotate(2160deg);
+  }
+
+  65.8% {
+    transform: rotate(2160deg);
+  }
+
+  79.2% {
+    transform: rotate(5040deg);
+  }
+
+  87.5%,
+  100% {
+    transform: rotate(5040deg);
   }
 }
 
 .anim-wheels {
-  animation: wheels-rotate 0.5s linear infinite;
-  animation-delay: 13s;
+  animation: wheels-rotate 24s linear infinite;
 }
 
 /* Hourglass animations */
