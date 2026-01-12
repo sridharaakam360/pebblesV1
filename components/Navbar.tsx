@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
 
       // Active section detection
       const sections = navItems.map(item => item.href.substring(1));
-      
+
       // Calculate center of viewport to determine "active" area
       const scrollPosition = window.scrollY + (window.innerHeight / 3);
 
@@ -47,23 +47,23 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass-nav shadow-sm py-2' : 'bg-transparent py-4'}`}>
+    <nav className={`fixed w-full z-[100] transition-all duration-300 ${scrolled ? 'glass-nav shadow-sm py-2' : 'bg-transparent py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <a 
-            href="#home" 
-            className="flex-shrink-0 flex items-center gap-2 cursor-pointer group" 
+          <a
+            href="#home"
+            className="flex-shrink-0 flex items-center gap-2 cursor-pointer group"
             onClick={handleNavClick}
           >
             {/* Using an icon abstraction for the logo stones */}
             <div className="relative w-10 h-10 flex items-center justify-center transition-transform group-hover:scale-105">
-                <div className="absolute w-6 h-4 bg-pebble-600 rounded-full top-2 left-0 transform -rotate-12 opacity-90"></div>
-                <div className="absolute w-5 h-3 bg-accent-500 rounded-full bottom-2 right-0 transform rotate-6 opacity-90"></div>
+              <div className="absolute w-6 h-4 bg-pebble-600 rounded-full top-2 left-0 transform -rotate-12 opacity-90"></div>
+              <div className="absolute w-5 h-3 bg-accent-500 rounded-full bottom-2 right-0 transform rotate-6 opacity-90"></div>
             </div>
             <div className="flex flex-col">
-                <span className="font-display font-bold text-xl leading-none tracking-tight text-slate-900 group-hover:text-pebble-800 transition-colors">Pebbles</span>
-                <span className="text-[0.65rem] font-semibold tracking-widest text-pebble-500 uppercase">Tech Studio</span>
+              <span className="font-display font-bold text-xl leading-none tracking-tight text-slate-900 group-hover:text-pebble-800 transition-colors">Pebbles</span>
+              <span className="text-[0.65rem] font-semibold tracking-widest text-pebble-500 uppercase">Tech Studio</span>
             </div>
           </a>
 
@@ -111,16 +111,15 @@ const Navbar: React.FC = () => {
       <div className={`md:hidden glass-nav absolute w-full border-b border-slate-200 transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="px-4 pt-2 pb-6 space-y-2">
           {navItems.map((item) => {
-             const isActive = activeSection === item.href.substring(1);
-             return (
+            const isActive = activeSection === item.href.substring(1);
+            return (
               <a
                 key={item.label}
                 href={item.href}
-                className={`block px-3 py-3 text-base font-medium rounded-md transition-colors ${
-                    isActive 
-                    ? 'text-accent-600 bg-slate-50' 
+                className={`block px-3 py-3 text-base font-medium rounded-md transition-colors ${isActive
+                    ? 'text-accent-600 bg-slate-50'
                     : 'text-slate-700 hover:text-accent-600 hover:bg-slate-50'
-                }`}
+                  }`}
                 onClick={handleNavClick}
               >
                 {item.label}
@@ -128,9 +127,9 @@ const Navbar: React.FC = () => {
             );
           })}
           <a
-              href="#contact"
-              className="block w-full text-center mt-4 bg-pebble-900 text-white px-5 py-3 rounded-lg font-medium hover:bg-accent-600 transition-colors cursor-pointer"
-              onClick={handleNavClick}
+            href="#contact"
+            className="block w-full text-center mt-4 bg-pebble-900 text-white px-5 py-3 rounded-lg font-medium hover:bg-accent-600 transition-colors cursor-pointer"
+            onClick={handleNavClick}
           >
             Get Started
           </a>
